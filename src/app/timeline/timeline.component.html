@@ -1,0 +1,36 @@
+<small
+  ><table class="table table-hover table-sm text-center">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Latitude, Longitude</th>
+        <th scope="col">Time from - to</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let place of interestLocations">
+        <th scope="row"></th>
+        <td>{{ place.latitude }}, {{ place.longitude }}</td>
+        <td>
+          {{ place.timeFrom | date: "medium" }} -
+          {{ place.timeTo | date: "medium" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</small>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <button type="button" class="btn btn-primary btn-sm btn-block">
+        Send Data for check
+      </button>
+    </div>
+    <div class="col-sm">
+      <button type="button" class="btn btn-danger btn-sm btn-block">
+        Tested COVID-19 Positive
+      </button>
+    </div>
+  </div>
+</div>

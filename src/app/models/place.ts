@@ -3,6 +3,6 @@ export class Place {
         public timeFrom: number,
         public timeTo: number,
         public latitude: number,
-        public longitude: number
+        public longitude: number,
     ) { }
 }
