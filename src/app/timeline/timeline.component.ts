@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
@@ -7,10 +7,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimelineService } from '../services/timeline.service';
-import { LocationsService } from '../services/locations.service';
 import { Questionaire } from '../models/questionaire';
 import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
 import { PositiveTestData } from '../models/positiveTestData';
+import { ResultsData } from '../models/resultsData';
+import { LocationsService } from '../services/locations.service';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class TimelineComponent implements OnInit {
 
   transformationType;
   direction;
+
+  @Output() showResults: EventEmitter<ResultsData[]> = new EventEmitter();
 
   constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
@@ -112,6 +115,12 @@ export class TimelineComponent implements OnInit {
   submitPositiveTestData(positiveTestData: PositiveTestData): void {
     this.locationsService.submitData(positiveTestData).subscribe(data => {
       console.log('submit success', data);
+    });
+  }
+
+  checkLocations(): void {
+    this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
+      this.showResults.emit(data);
     });
   }
 

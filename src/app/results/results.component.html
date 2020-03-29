@@ -1,0 +1,46 @@
+<h2 class="text-center">
+  Your score <span class="badge badge-secondary">{{ totalScore }}</span>
+</h2>
+<small
+  ><table class="table table-hover table-sm text-center margin-medium">
+    <thead>
+      <tr>
+        <th scope="col">Latitude, Longitude</th>
+        <th scope="col">Time from - to</th>
+        <th scope="col">Score</th>
+      </tr>
+    </thead>
+    <tbody class="pointer-link">
+      <tr
+        *ngFor="let loc of results"
+        [ngStyle]="loc.score > 50 && { color: 'red' }"
+      >
+        <td>
+          {{
+            loc.lat
+              | coordinates: transformationType.toDegree:direction.Latitude
+          }},
+          {{
+            loc.lon
+              | coordinates: transformationType.toDegree:direction.lontitude
+          }}
+        </td>
+        <td>
+          {{ loc.from | date: "short" }} -
+          {{ loc.to | date: "short" }}
+        </td>
+        <td>{{ loc.score }}</td>
+      </tr>
+    </tbody>
+  </table>
+</small>
+
+<div class="container">
+  <button
+    type="button"
+    class="btn btn-primary btn-sm btn-block"
+    (click)="navigate()"
+  >
+    Get advisory from your local health service officials
+  </button>
+</div>

@@ -22,5 +22,9 @@
 </div>
 
 <div class="mainframe">
-  <app-timeline></app-timeline>
+  <app-timeline
+    *ngIf="!showResults"
+    (showResults)="openResults($event)"
+  ></app-timeline>
+  <app-results *ngIf="showResults" [results]="eventResults"></app-results>
 </div>
