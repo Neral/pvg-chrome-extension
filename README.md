@@ -16,6 +16,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Click the now-visible **"Load unpacked extension…"** button.
 - Select the directory containing your unpacked extension.
 
+## How to Contribute
+
+1. Clone repo and create a new branch.
+2. Make changes and test.
+3. Submit Pull Request with comprehensive description of changes.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
