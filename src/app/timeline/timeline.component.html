@@ -2,12 +2,21 @@
   ><table class="table table-hover table-sm text-center ">
     <thead>
       <tr>
+        <th></th>
         <th scope="col">Latitude, Longitude</th>
         <th scope="col">Time from - to</th>
       </tr>
     </thead>
-    <tbody class="pointer-link">
-      <tr *ngFor="let loc of interestLocations" (click)="updatePlace(loc)">
+    <tbody>
+      <tr *ngFor="let loc of interestLocations">
+        <td>
+          <span class="pointer-link icon--right" (click)="remove(loc)"
+            ><fa-icon [icon]="faTrash"></fa-icon>
+          </span>
+          <span class="pointer-link icon--left" (click)="update(loc)"
+            ><fa-icon [icon]="faEdit"></fa-icon>
+          </span>
+        </td>
         <td>
           {{
             loc.lat
@@ -26,9 +35,9 @@
     </tbody>
   </table>
   <p class="text-right">
-    <span (click)="addPlace()" class="pointer-link"
-      ><fa-icon [icon]="faPlus"></fa-icon
-      ><u> Add New Location with Time</u></span
+    <span (click)="add()" class="pointer-link"
+      ><fa-icon [icon]="faPlus" class="icon--right-small"></fa-icon
+      ><u>Add New Location with Time</u></span
     >
   </p>
 </small>

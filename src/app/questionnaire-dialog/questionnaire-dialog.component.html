@@ -1,14 +1,17 @@
 <small>
   <div mat-dialog-content>
     <form>
-      <mat-form-field floatPlaceholder="always">
-        <mat-label> Type of taken test:</mat-label>
+      <mat-form-field>
+        <div class="bottom-margin">
+          <small>
+            <strong>Type of your positive test:</strong>
+          </small>
+        </div>
         <input matInput style="display: none" />
         <mat-checkbox
           color="warn"
           [(ngModel)]="data.isOfficialTest"
           name="isOfficialTest"
-          class="top-margin--small"
           ><small>Nasal and Throat swab RT-PCR</small></mat-checkbox
         >
         <mat-hint
@@ -19,7 +22,7 @@
           >
             Nasal and Throat swab RT-PCR</a
           >
-          test.</mat-hint
+          type test.</mat-hint
         >
       </mat-form-field>
 

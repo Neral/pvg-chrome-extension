@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -22,6 +22,8 @@ import { LocationsService } from '../services/locations.service';
 export class TimelineComponent implements OnInit {
   interestLocations: Location[] = new Array();
   faPlus = faPlus;
+  faTrash = faTrash;
+  faEdit = faEdit;
 
   transformationType;
   direction;
@@ -58,18 +60,23 @@ export class TimelineComponent implements OnInit {
     }
   }
 
-  addPlace(): void {
+  add(): void {
     const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
   // TODO: add possibility to remove
   // TODO: fix format, that in calendar would be marked
   // 
-  updatePlace(loc: Location): void {
+  update(loc: Location): void {
     console.log(moment(loc.from).format('D/MM/YYYY, HH:mm A'));
     const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
+  }
+
+  remove(loc: Location): void {
+    const index = this.interestLocations.indexOf(loc);
+    this.interestLocations.splice(index, 1);
   }
 
   openDialog(data: LocationForm | Location, updateIndex?: number): void {
