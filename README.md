@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## How To Install
 
 #### Chrome Web Store
-`Not published yet...`
+- [Install extension here.](https://chrome.google.com/webstore/detail/pvg/jmdhbjegpgbnlllbfcpiemhfbcfheamb?authuser=0&hl=en-GB)
 
 #### Manual/Development
 
