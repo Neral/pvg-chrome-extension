@@ -18,12 +18,13 @@
   Your score <span class="badge badge-secondary">{{ totalScore }}</span>
 </h2>
 <small
-  ><table class="table table-hover table-sm text-center margin-medium">
+  ><table class="table table-hover table-sm margin-medium text-center">
     <thead>
       <tr>
-        <th scope="col">Latitude, Longitude</th>
-        <th scope="col">Time from - to</th>
-        <th scope="col">Score</th>
+        <th scope="col" class="column-1">Score</th>
+
+        <th scope="col" class="column-2">Latitude, Longitude</th>
+        <th scope="col" class="column-3">Time from - to</th>
       </tr>
     </thead>
     <tbody class="pointer-link">
@@ -31,7 +32,9 @@
         *ngFor="let loc of results"
         [ngStyle]="loc.score > 50 && { color: 'red' }"
       >
-        <td>
+        <td class="column-1">{{ loc.score }}</td>
+
+        <td class="column-2">
           {{
             loc.lat
               | coordinates: transformationType.toDegree:direction.Latitude
@@ -41,11 +44,10 @@
               | coordinates: transformationType.toDegree:direction.lontitude
           }}
         </td>
-        <td>
+        <td class="column-3">
           {{ loc.from | date: "short" }} -
           {{ loc.to | date: "short" }}
         </td>
-        <td>{{ loc.score }}</td>
       </tr>
     </tbody>
   </table>
