@@ -14,17 +14,20 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import {
   OwlDateTimeModule,
   OwlNativeDateTimeModule
 } from 'ng-pick-datetime';
+import { QuestionnaireDialogComponent } from './questionnaire-dialog/questionnaire-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimelineComponent,
-    PlaceDialogComponent
+    PlaceDialogComponent,
+    QuestionnaireDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,12 +42,13 @@ import {
     MatNativeDateModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule
   ],
   providers: [
   ],
   bootstrap: [AppComponent],
-  entryComponents: [PlaceDialogComponent],
+  entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent],
 
 })
 export class AppModule { }

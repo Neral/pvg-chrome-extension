@@ -8,6 +8,8 @@ import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimelineService } from '../services/timeline.service';
 import { PlacesService } from '../services/places.service';
+import { Questionaire } from '../models/questionaire';
+import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
 
 
 @Component({
@@ -90,6 +92,20 @@ export class TimelineComponent implements OnInit {
       } else {
         this.interestLocations.push(place);
       }
+    });
+  }
+  // TODO: think to create general
+  openQuestionaireDialog(): void {
+    const data: Questionaire = new Questionaire(null, null, false);
+    const dialogRef: MatDialogRef<QuestionnaireDialogComponent, any> = this.dialog.open(QuestionnaireDialogComponent, {
+      width: '250px',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      // TODO add questionaire data to post when backend is ready (change time format)
+      this.submitTestedPositivePlaces();
     });
   }
 
