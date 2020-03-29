@@ -1,3 +1,15 @@
-.pointer-link { 
-    cursor: pointer; 
-  } 
+.pointer-link {
+  cursor: pointer;
+}
+
+.icon {
+  &--left {
+    padding-left: 10px;
+  }
+  &--right {
+    padding-right: 10px;
+  }
+  &--right-small {
+    padding-right: 5px;
+  }
+}
