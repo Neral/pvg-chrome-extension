@@ -22,6 +22,7 @@ import {
 } from 'ng-pick-datetime';
 import { QuestionnaireDialogComponent } from './questionnaire-dialog/questionnaire-dialog.component';
 import { ResultsComponent } from './results/results.component';
+import { InformationComponent } from './information/information.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ResultsComponent } from './results/results.component';
     TimelineComponent,
     PlaceDialogComponent,
     QuestionnaireDialogComponent,
-    ResultsComponent
+    ResultsComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,
