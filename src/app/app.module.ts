@@ -21,13 +21,15 @@ import {
   OwlNativeDateTimeModule
 } from 'ng-pick-datetime';
 import { QuestionnaireDialogComponent } from './questionnaire-dialog/questionnaire-dialog.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimelineComponent,
     PlaceDialogComponent,
-    QuestionnaireDialogComponent
+    QuestionnaireDialogComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,
