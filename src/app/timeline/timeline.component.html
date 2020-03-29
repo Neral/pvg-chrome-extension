@@ -1,16 +1,23 @@
 <small
-  ><table class="table table-hover table-sm text-center">
+  ><table class="table table-hover table-sm text-center ">
     <thead>
       <tr>
-        <th scope="col"></th>
         <th scope="col">Latitude, Longitude</th>
         <th scope="col">Time from - to</th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let place of interestLocations">
-        <th scope="row"></th>
-        <td>{{ place.latitude }}, {{ place.longitude }}</td>
+    <tbody class="pointer-link">
+      <tr *ngFor="let place of interestLocations" (click)="updatePlace(place)">
+        <td>
+          {{
+            place.latitude
+              | coordinates: transformationType.toDegree:direction.Latitude
+          }},
+          {{
+            place.longitude
+              | coordinates: transformationType.toDegree:direction.Longtitude
+          }}
+        </td>
         <td>
           {{ place.timeFrom | date: "medium" }} -
           {{ place.timeTo | date: "medium" }}
@@ -18,6 +25,12 @@
       </tr>
     </tbody>
   </table>
+  <p class="text-right">
+    <span (click)="addPlace()" class="pointer-link"
+      ><fa-icon [icon]="faPlus"></fa-icon
+      ><u> Add New Location with Time</u></span
+    >
+  </p>
 </small>
 
 <div class="container">

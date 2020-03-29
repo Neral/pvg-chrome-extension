@@ -1,0 +1,72 @@
+<small>
+  <div mat-dialog-content>
+    <form>
+      <mat-form-field>
+        <mat-label>Date and Time</mat-label>
+        <input
+          matInput
+          [owlDateTime]="dtRange"
+          [owlDateTimeTrigger]="dtRange"
+          [(ngModel)]="data.timeRange"
+          name="dtRange"
+          [selectMode]="'range'"
+          placeholder="From - To"
+        />
+        <owl-date-time #dtRange></owl-date-time>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Latitude</mat-label>
+        <input
+          matInput
+          [(ngModel)]="data.latitude"
+          name="latitude"
+          placeholder="e.g. 13.3646789"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Longitude</mat-label>
+        <input
+          matInput
+          [(ngModel)]="data.longitude"
+          name="longitude"
+          placeholder="e.g. -13.3646789"
+        />
+      </mat-form-field>
+      <p>
+        Check your places coordinates at
+        <a
+          href="https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en"
+          target="_blank"
+        >
+          Google Support Page</a
+        >
+      </p>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm btn-block"
+              [mat-dialog-close]="data"
+              cdkFocusInitial
+            >
+              Add
+            </button>
+          </div>
+          <div class="col-sm">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm btn-block"
+              (click)="cancel()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</small>
