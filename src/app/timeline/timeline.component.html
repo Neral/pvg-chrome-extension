@@ -7,20 +7,20 @@
       </tr>
     </thead>
     <tbody class="pointer-link">
-      <tr *ngFor="let place of interestLocations" (click)="updatePlace(place)">
+      <tr *ngFor="let loc of interestLocations" (click)="updatePlace(loc)">
         <td>
           {{
-            place.coords.lat
+            loc.lat
               | coordinates: transformationType.toDegree:direction.Latitude
           }},
           {{
-            place.coords.lon
+            loc.lon
               | coordinates: transformationType.toDegree:direction.lontitude
           }}
         </td>
         <td>
-          {{ place.time.from | date: "short" }} -
-          {{ place.time.to | date: "short" }}
+          {{ loc.from | date: "short" }} -
+          {{ loc.to | date: "short" }}
         </td>
       </tr>
     </tbody>

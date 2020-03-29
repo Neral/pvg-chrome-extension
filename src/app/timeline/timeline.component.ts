@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { IPlace, UserFormPlace, PlaceTime, PlaceCoords } from '../models/place';
+import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimelineService } from '../services/timeline.service';
-import { PlacesService } from '../services/places.service';
+import { LocationsService } from '../services/locations.service';
 import { Questionaire } from '../models/questionaire';
 import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
+import { PositiveTestData } from '../models/positiveTestData';
 
 
 @Component({
@@ -18,13 +19,13 @@ import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionna
   styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
-  interestLocations: IPlace[] = new Array();
+  interestLocations: Location[] = new Array();
   faPlus = faPlus;
 
   transformationType;
   direction;
 
-  constructor(private timelineService: TimelineService, private placesService: PlacesService, public dialog: MatDialog) {
+  constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
     this.direction = Direction;
   }
@@ -40,38 +41,35 @@ export class TimelineComponent implements OnInit {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
     const timeFromLocations = moment().subtract(weeksBack, 'week').valueOf();
-
+    // TODO: rename
     for (const loc of data[0][0]) {
-      const place: IPlace = {
-        time: {
-          from: loc[0],
-          to: loc[13]
-        },
-        coords: {
-          lat: loc[1][2],
-          lon: loc[1][3]
-        }
+      const location: Location = {
+        from: loc[0],
+        to: loc[13],
+        lat: loc[1][2],
+        lon: loc[1][3]
       };
-      if (place.time.from < timeFromLocations) { continue; }
-      if (place.time.to - place.time.from < minLocDuration * 1000) { continue; }
-      this.interestLocations.push(place);
+      if (location.from < timeFromLocations) { continue; }
+      if (location.to - location.from < minLocDuration * 1000) { continue; }
+      this.interestLocations.push(location);
     }
   }
 
   addPlace(): void {
-    const data = new UserFormPlace(null, null, null);
+    const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
   // TODO: add possibility to remove
   // TODO: fix format, that in calendar would be marked
-  updatePlace(place: IPlace): void {
-    console.log(moment(place.time.from).format('D/MM/YYYY, HH:mm A'));
-    const data = new UserFormPlace([place.time.from, place.time.to], place.coords.lat, place.coords.lon);
-    const index = this.interestLocations.indexOf(place);
+  // 
+  updatePlace(loc: Location): void {
+    console.log(moment(loc.from).format('D/MM/YYYY, HH:mm A'));
+    const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
+    const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
   }
 
-  openDialog(data: UserFormPlace | IPlace, updateIndex?: number): void {
+  openDialog(data: LocationForm | Location, updateIndex?: number): void {
     const dialogRef: MatDialogRef<PlaceDialogComponent, any> = this.dialog.open(PlaceDialogComponent, {
       width: '250px',
       data
@@ -80,17 +78,12 @@ export class TimelineComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       const from: number = new Date(result.timeRange[0]).getTime();
       const to: number = new Date(result.timeRange[1]).getTime();
-      const time: PlaceTime = { from, to };
-      const coords: PlaceCoords = {
-        lat: result.latitude,
-        lon: result.longitude
-      };
-      const place: IPlace = { time, coords };
+      const location: Location = { from, to, lat: result.latitude, lon: result.longitude };
 
       if (updateIndex) {
-        this.interestLocations[updateIndex] = place;
+        this.interestLocations[updateIndex] = location;
       } else {
-        this.interestLocations.push(place);
+        this.interestLocations.push(location);
       }
     });
   }
@@ -102,15 +95,22 @@ export class TimelineComponent implements OnInit {
       data
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: Questionaire) => {
       console.log(result);
-      // TODO add questionaire data to post when backend is ready (change time format)
-      this.submitTestedPositivePlaces();
+      if (result.isOfficialTest) {
+        const testDate = new Date(result.time).getTime();
+        const positiveTestData: PositiveTestData = new PositiveTestData(result.email, testDate, this.interestLocations);
+        this.submitPositiveTestData(positiveTestData);
+        console.log('submit');
+        // TODO: remove all console.logs
+      } else {
+        console.log('Data is not submitted');
+      }
     });
   }
 
-  submitTestedPositivePlaces(): void {
-    this.placesService.submitPlaces(this.interestLocations).subscribe(data => {
+  submitPositiveTestData(positiveTestData: PositiveTestData): void {
+    this.locationsService.submitData(positiveTestData).subscribe(data => {
       console.log('submit success', data);
     });
   }

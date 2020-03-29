@@ -3,18 +3,20 @@
     <form>
       <mat-form-field floatPlaceholder="always">
         <mat-label> Type of taken test:</mat-label>
-        <input
-          matInput
-          style="display: none"
+        <input matInput style="display: none" />
+        <mat-checkbox
+          color="warn"
           [(ngModel)]="data.isOfficialTest"
           name="isOfficialTest"
-        />
-        <mat-checkbox color="warn"
+          class="top-margin--small"
           ><small>Nasal and Throat swab RT-PCR</small></mat-checkbox
         >
         <mat-hint
           >Information about
-          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+          <a
+            href="https://www.nejm.org/doi/10.1056/NEJMc2004973"
+            target="_blank"
+          >
             Nasal and Throat swab RT-PCR</a
           >
           test.</mat-hint
