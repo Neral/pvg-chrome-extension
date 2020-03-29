@@ -10,17 +10,17 @@
       <tr *ngFor="let place of interestLocations" (click)="updatePlace(place)">
         <td>
           {{
-            place.latitude
+            place.coords.lat
               | coordinates: transformationType.toDegree:direction.Latitude
           }},
           {{
-            place.longitude
-              | coordinates: transformationType.toDegree:direction.Longtitude
+            place.coords.lon
+              | coordinates: transformationType.toDegree:direction.lontitude
           }}
         </td>
         <td>
-          {{ place.timeFrom | date: "medium" }} -
-          {{ place.timeTo | date: "medium" }}
+          {{ place.time.from | date: "short" }} -
+          {{ place.time.to | date: "short" }}
         </td>
       </tr>
     </tbody>
@@ -41,7 +41,11 @@
       </button>
     </div>
     <div class="col-sm">
-      <button type="button" class="btn btn-danger btn-sm btn-block">
+      <button
+        type="button"
+        class="btn btn-danger btn-sm btn-block"
+        (click)="submitTestedPositivePlaces()"
+      >
         Tested COVID-19 Positive
       </button>
     </div>

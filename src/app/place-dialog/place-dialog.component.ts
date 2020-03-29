@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Place, UserFormPlace } from '../models/place';
+import { UserFormPlace } from '../models/place';
 
 @Component({
   selector: 'app-place-dialog',
