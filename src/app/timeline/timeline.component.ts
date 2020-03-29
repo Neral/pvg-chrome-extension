@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
-import { Place, UserFormPlace } from '../models/place';
+import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TimelineService } from '../services/timeline.service';
+import { LocationsService } from '../services/locations.service';
+import { Questionaire } from '../models/questionaire';
+import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
+import { PositiveTestData } from '../models/positiveTestData';
 
 
 @Component({
@@ -15,75 +19,99 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
-  interestLocations: Place[] = new Array();
+  interestLocations: Location[] = new Array();
   faPlus = faPlus;
 
   transformationType;
   direction;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
     this.direction = Direction;
   }
 
-  ngOnInit() {
-    this.loadData();
-  }
-
-  // TODO: create separate service for all endpoints
-  loadData() {
-    return this.http.get('https://www.google.com/maps/timeline/_rpc/ma?pb=').subscribe(data => {
+  ngOnInit(): void {
+    this.timelineService.fetchTimeline().subscribe(data => {
       console.log('data is fetched');
       this.filterData(data);
     });
   }
 
-  filterData(data) {
+  filterData(data): void {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
     const timeFromLocations = moment().subtract(weeksBack, 'week').valueOf();
-
+    // TODO: rename
     for (const loc of data[0][0]) {
-      const place = new Place(loc[0], loc[13], loc[1][2], loc[1][3]);
-      if (place.timeFrom < timeFromLocations) { continue; }
-      if (place.timeTo - place.timeFrom < minLocDuration * 1000) { continue; }
-      this.interestLocations.push(place);
-    }
-
-    for (const loc of this.interestLocations) {
-      console.log(loc);
+      const location: Location = {
+        from: loc[0],
+        to: loc[13],
+        lat: loc[1][2],
+        lon: loc[1][3]
+      };
+      if (location.from < timeFromLocations) { continue; }
+      if (location.to - location.from < minLocDuration * 1000) { continue; }
+      this.interestLocations.push(location);
     }
   }
 
   addPlace(): void {
-    const data = new UserFormPlace(null, null, null);
+    const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
   // TODO: add possibility to remove
   // TODO: fix format, that in calendar would be marked
-  updatePlace(place: Place): void {
-    console.log(moment(place.timeFrom).format('D/MM/YYYY, HH:mm A'));
-    const data = new UserFormPlace([place.timeFrom, place.timeTo], place.latitude, place.longitude);
-    const index = this.interestLocations.indexOf(place);
+  // 
+  updatePlace(loc: Location): void {
+    console.log(moment(loc.from).format('D/MM/YYYY, HH:mm A'));
+    const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
+    const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
   }
 
-  openDialog(data: UserFormPlace | Place, updateIndex?: number) {
-    const dialogRef = this.dialog.open(PlaceDialogComponent, {
+  openDialog(data: LocationForm | Location, updateIndex?: number): void {
+    const dialogRef: MatDialogRef<PlaceDialogComponent, any> = this.dialog.open(PlaceDialogComponent, {
       width: '250px',
       data
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const from = new Date(result.timeRange[0]).getTime();
-      const to = new Date(result.timeRange[1]).getTime();
-      const place = new Place(from, to, result.latitude, result.longitude);
+      const from: number = new Date(result.timeRange[0]).getTime();
+      const to: number = new Date(result.timeRange[1]).getTime();
+      const location: Location = { from, to, lat: result.latitude, lon: result.longitude };
 
       if (updateIndex) {
-        this.interestLocations[updateIndex] = place;
+        this.interestLocations[updateIndex] = location;
       } else {
-        this.interestLocations.push(place);
+        this.interestLocations.push(location);
       }
+    });
+  }
+  // TODO: think to create general
+  openQuestionaireDialog(): void {
+    const data: Questionaire = new Questionaire(null, null, false);
+    const dialogRef: MatDialogRef<QuestionnaireDialogComponent, any> = this.dialog.open(QuestionnaireDialogComponent, {
+      width: '250px',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe((result: Questionaire) => {
+      console.log(result);
+      if (result.isOfficialTest) {
+        const testDate = new Date(result.time).getTime();
+        const positiveTestData: PositiveTestData = new PositiveTestData(result.email, testDate, this.interestLocations);
+        this.submitPositiveTestData(positiveTestData);
+        console.log('submit');
+        // TODO: remove all console.logs
+      } else {
+        console.log('Data is not submitted');
+      }
+    });
+  }
+
+  submitPositiveTestData(positiveTestData: PositiveTestData): void {
+    this.locationsService.submitData(positiveTestData).subscribe(data => {
+      console.log('submit success', data);
     });
   }
 

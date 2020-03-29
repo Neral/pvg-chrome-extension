@@ -7,7 +7,7 @@
     "default_popup": "index.html",
     "default_icon": "assets/logo.png"
   },
-  "permissions": ["webNavigation", "https://www.google.com/"],
+  "permissions": ["webNavigation", "https://www.google.com/", "http://privacy-vs-germs.us-east-2.elasticbeanstalk.com/locations"],
   "background": {
     "scripts": ["background.js", "runtime.js"]
   }
