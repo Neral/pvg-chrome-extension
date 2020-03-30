@@ -1,13 +1,21 @@
 {
   "name": "PVG",
-  "version": "1.0",
+  "version": "1.2",
   "description": "Privacy VS Gems",
   "manifest_version": 2,
   "browser_action": {
-    "default_popup": "index.html",
-    "default_icon": "assets/logo.png"
+    "default_popup": "index.html"
   },
-  "permissions": ["webNavigation", "https://www.google.com/", "http://privacy-vs-germs.us-east-2.elasticbeanstalk.com/locations"],
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": [
+    "webNavigation",
+    "https://www.google.com/",
+    "http://privacy-vs-germs.us-east-2.elasticbeanstalk.com/locations"
+  ],
   "background": {
     "scripts": ["background.js", "runtime.js"]
   }

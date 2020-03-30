@@ -1,9 +1,19 @@
-<app-information *ngIf="!showResults"></app-information>
+<app-information *ngIf="!showResults && !isSubmitSuccess"></app-information>
 
 <div class="mainframe">
   <app-timeline
     *ngIf="!showResults"
     (showResults)="openResults($event)"
+    (showThankYou)="showThankYou($event)"
   ></app-timeline>
   <app-results *ngIf="showResults" [results]="eventResults"></app-results>
+
+  <div *ngIf="isSubmitSuccess" class="thank-you">
+    <p class="text-center">
+      <strong>
+        <h1><fa-icon [icon]="faHeart" class="icon"></fa-icon></h1>
+        <h3>Thank you for your coollaboration!</h3>
+      </strong>
+    </p>
+  </div>
 </div>
