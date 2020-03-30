@@ -30,7 +30,9 @@
     <tbody class="pointer-link">
       <tr
         *ngFor="let loc of results"
-        [ngStyle]="loc.score > 50 && { color: 'red' }"
+        [class.risk--high]="loc.score > 99"
+        [class.risk--medium]="loc.score > 4 && loc.score < 100"
+        [class.risk--low]="loc.score > 0 && loc.score < 5"
       >
         <td class="column-1">{{ loc.score }}</td>
 
@@ -55,8 +57,9 @@
 
 <div class="container">
   <button
-    type="button"
-    class="btn btn-primary btn-sm btn-block"
+    mat-raised-button
+    color="primary"
+    class="button-width"
     (click)="navigate()"
   >
     Get advisory from your local health service officials

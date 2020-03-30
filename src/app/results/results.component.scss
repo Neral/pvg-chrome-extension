@@ -36,3 +36,19 @@ table td {
     width: 45%;
   }
 }
+
+.button-width {
+  width: 36em;
+}
+
+.risk {
+  &--high {
+    background-color: #b5b8e3;
+  }
+  &--medium {
+    background-color: #dadef1;
+  }
+  &--low {
+    background-color: #eceef8;
+  }
+}

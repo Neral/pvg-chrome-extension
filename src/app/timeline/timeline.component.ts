@@ -21,6 +21,10 @@ import { LocationsService } from '../services/locations.service';
 })
 export class TimelineComponent implements OnInit {
   interestLocations: Location[] = new Array();
+  isBusy: boolean;
+  isTimelineExist: boolean;
+  isError: boolean;
+
   faPlus = faPlus;
   faTrash = faTrash;
   faEdit = faEdit;
@@ -36,27 +40,36 @@ export class TimelineComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isBusy = true;
     this.timelineService.fetchTimeline().subscribe(data => {
       console.log('data is fetched');
       this.filterData(data);
-    });
+    },
+      () => this.isError = true);
   }
 
   filterData(data): void {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
     const timeFromLocations = moment().subtract(weeksBack, 'week').valueOf();
-    // TODO: rename
-    for (const loc of data[0][0]) {
+    for (const dataset of data[0][0]) {
       const location: Location = {
-        from: loc[0],
-        to: loc[13],
-        lat: loc[1][2],
-        lon: loc[1][3]
+        from: dataset[0],
+        to: dataset[13],
+        lat: dataset[1][2],
+        lon: dataset[1][3]
       };
       if (location.from < timeFromLocations) { continue; }
       if (location.to - location.from < minLocDuration * 1000) { continue; }
       this.interestLocations.push(location);
+    }
+
+    if (this.interestLocations.length > 0) {
+      this.isBusy = false;
+      this.isTimelineExist = true;
+    } else {
+      this.isBusy = false;
+      this.isTimelineExist = true;
     }
   }
 
@@ -64,9 +77,7 @@ export class TimelineComponent implements OnInit {
     const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
-  // TODO: add possibility to remove
   // TODO: fix format, that in calendar would be marked
-  // 
   update(loc: Location): void {
     console.log(moment(loc.from).format('D/MM/YYYY, HH:mm A'));
     const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
@@ -126,9 +137,19 @@ export class TimelineComponent implements OnInit {
   }
 
   checkLocations(): void {
-    this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
-      this.showResults.emit(data);
-    });
+    const resultsMock: ResultsData[] = [{ from: 1584576000000, to: 1584662400000, lat: 36.7758493, lon: -119.7181083, score: 80 },
+    { from: 1584976820000, to: 1585008000000, lat: 54.8268066, lon: 24.9463829, score: 0 },
+    { from: 1585008000000, to: 1585087200000, lat: 0, lon: 180, score: 20 },
+    { from: 1585087260000, to: 1585094400000, lat: 51.081083, lon: -114.1294214999999, score: 4 },
+    { from: 1585324800000, to: 1585326307000, lat: 23.3812399, lon: 86.246775, score: 830 },
+    { from: 1585333196000, to: 1585400781000, lat: -3.9736393, lon: 122.52313079999998, score: 10 }
+    ];
+
+    this.showResults.emit(resultsMock);
+    // TODO: enable backend post
+    // this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
+    //   this.showResults.emit(data);
+    // });
   }
 
 }

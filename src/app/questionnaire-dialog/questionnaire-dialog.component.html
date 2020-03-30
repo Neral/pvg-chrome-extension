@@ -26,7 +26,7 @@
         >
       </mat-form-field>
 
-      <mat-form-field class="top-margin--small">
+      <mat-form-field class="top-margin--medium">
         <mat-label>Date of positive test</mat-label>
         <input
           matInput
@@ -56,18 +56,19 @@
         <div class="row">
           <div class="col-sm">
             <button
-              type="button"
-              class="btn btn-primary btn-sm btn-block"
+              mat-raised-button
+              color="primary"
+              class="button-width"
               [mat-dialog-close]="data"
-              cdkFocusInitial
             >
               Submit
             </button>
           </div>
-          <div class="col-sm">
+          <div class="col-sm  top-margin--small">
             <button
-              type="button"
-              class="btn btn-danger btn-sm btn-block"
+              mat-raised-button
+              color="warn"
+              class="button-width"
               (click)="cancel()"
             >
               Cancel

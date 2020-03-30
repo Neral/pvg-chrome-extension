@@ -38,3 +38,12 @@ tbody {
   height: 150px;
   position: absolute;
 }
+
+table th,
+table td {
+  overflow: hidden;
+}
+
+.button-width {
+  width: 15em;
+}
