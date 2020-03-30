@@ -1,0 +1,54 @@
+.margin-medium {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+tr {
+  width: 100%;
+  display: inline-table;
+  table-layout: fixed;
+}
+
+table {
+  height: 250px;
+  table-layout: fixed;
+}
+
+tbody {
+  overflow-y: scroll;
+  height: 250px;
+  position: absolute;
+}
+
+table th,
+table td {
+  overflow: hidden;
+}
+
+.column {
+  &-1 {
+    width: 10%;
+  }
+  &-2 {
+    width: 45%;
+  }
+  &-3 {
+    width: 45%;
+  }
+}
+
+.button-width {
+  width: 36em;
+}
+
+.risk {
+  &--high {
+    background-color: #b5b8e3;
+  }
+  &--medium {
+    background-color: #dadef1;
+  }
+  &--low {
+    background-color: #eceef8;
+  }
+}

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ResultsData } from './models/resultsData';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'pvg-chrome-extension';
+  showResults: boolean;
+  showTimeline: boolean;
+  eventResults: ResultsData[];
+
+  openResults(results: ResultsData[]): void {
+    this.showResults = true;
+    this.eventResults = results;
+    console.log(results);
+  }
 }
+
