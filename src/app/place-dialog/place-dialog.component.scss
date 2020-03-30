@@ -2,6 +2,11 @@
   width: 12em;
 }
 
-.top-margin--small {
-  margin-top: 5px;
+.top-margin {
+  &--large {
+    margin-top: 50px;
+  }
+  &--small {
+    margin-top: 5px;
+  }
 }

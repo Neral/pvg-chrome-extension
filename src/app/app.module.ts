@@ -26,6 +26,8 @@ import { InformationComponent } from './information/information.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { NoopScrollStrategy, OverlayContainer } from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -57,6 +59,8 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
   ],
   providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { scrollStrategy: new NoopScrollStrategy() } },
+    { provide: OverlayContainer, useClass: OverlayContainer }
   ],
   bootstrap: [AppComponent],
   entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent],
