@@ -22,6 +22,11 @@ import {
 } from 'ng-pick-datetime';
 import { QuestionnaireDialogComponent } from './questionnaire-dialog/questionnaire-dialog.component';
 import { ResultsComponent } from './results/results.component';
+import { InformationComponent } from './information/information.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import { ResultsComponent } from './results/results.component';
     TimelineComponent,
     PlaceDialogComponent,
     QuestionnaireDialogComponent,
-    ResultsComponent
+    ResultsComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,10 @@ import { ResultsComponent } from './results/results.component';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
   ],
   providers: [
   ],

@@ -7,9 +7,43 @@
     padding-left: 10px;
   }
   &--right {
-    padding-right: 10px;
+    &-medium {
+      padding-right: 10px;
+    }
+    &-large {
+      padding-right: 50px;
+    }
+    &-small {
+      padding-right: 5px;
+    }
   }
-  &--right-small {
-    padding-right: 5px;
-  }
+}
+
+.add-location--padding {
+  padding-top: 20px;
+}
+
+tr {
+  width: 100%;
+  display: inline-table;
+  table-layout: fixed;
+}
+
+table {
+  height: 150px;
+}
+
+tbody {
+  overflow-y: scroll;
+  height: 150px;
+  position: absolute;
+}
+
+table th,
+table td {
+  overflow: hidden;
+}
+
+.button-width {
+  width: 15em;
 }
