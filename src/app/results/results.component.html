@@ -1,5 +1,5 @@
 <small>
-  <div class="alert alert-light" role="alert">
+  <div class="alert alert-light text-justify no-margin" role="alert">
     <p>
       Based on
       <a href="https://www.google.com/maps/timeline?pb" target="_blank">
@@ -12,11 +12,57 @@
     </p>
     <hr />
   </div>
+
+  <h4 class="text-center no-margin">
+    Your overall location history score is
+    <span class="badge badge-secondary">{{ totalScore }}</span>
+  </h4>
+
+  <div
+    class="alert alert-light text-justify"
+    role="alert"
+    *ngIf="totalScore > 4"
+  >
+    <small>
+      Recommendations for people with medium/highrisk (positive COVID-19 case on
+      route): <br />
+      People who are otherwise healthy should self-isolateand contact their
+      medical provider or a COVID-19information line for advice on testing and
+      referral onlyif they develop any symptoms (stated below) duringnext 14
+      days in self-isolation. <br />Symptoms:<br />Fever; tiredness; dry cough;
+      shortness of breath; achesand pains; sore throat. Very few people will
+      reportdiarrhoea, nausea or a runny nose.
+    </small>
+  </div>
+
+  <div class="alert alert-light" role="alert" *ngIf="totalScore < 4">
+    <small>
+      Recommendations for people with low risk (nopositive COVID-19 case founded
+      on route):
+      <ul>
+        <li>
+          Wash your hands regularly with soap and water, or clean them with
+          alcohol-based hand rub.
+        </li>
+        <li>
+          Maintain at least 1 meter distance between you and people coughing or
+          sneezing.
+        </li>
+        <li>Avoid touching your face.</li>
+        <li>Cover your mouth and nose when coughing or sneezing.</li>
+        <li>Stay home if you feel unwell.</li>
+        <li>
+          Refrain from smoking and other activities that weaken the lungs.
+        </li>
+        <li>
+          Practice physical distancing by avoiding unnecessary travel and
+          staying away from large groups of people.
+        </li>
+      </ul>
+    </small>
+  </div>
 </small>
 
-<h2 class="text-center">
-  Your score <span class="badge badge-secondary">{{ totalScore }}</span>
-</h2>
 <small
   ><table class="table table-hover table-sm margin-medium text-center">
     <thead>
@@ -30,8 +76,8 @@
     <tbody class="pointer-link">
       <tr
         *ngFor="let loc of results"
-        [class.risk--high]="loc.score > 99"
-        [class.risk--medium]="loc.score > 4 && loc.score < 100"
+        [class.risk--high]="loc.score > 10"
+        [class.risk--medium]="loc.score > 4 && loc.score < 10"
         [class.risk--low]="loc.score > 0 && loc.score < 5"
       >
         <td class="column-1">{{ loc.score }}</td>
@@ -62,6 +108,6 @@
     class="button-width"
     (click)="navigate()"
   >
-    Get advisory from your local health service officials
+    Get advisory from your World Health Organization
   </button>
 </div>
