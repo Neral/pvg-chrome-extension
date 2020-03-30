@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
-import { faPlus, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -24,15 +24,18 @@ export class TimelineComponent implements OnInit {
   isBusy: boolean;
   isTimelineExist: boolean;
   isError: boolean;
+  isSubmitSuccess: boolean;
 
   faPlus = faPlus;
   faTrash = faTrash;
   faEdit = faEdit;
+  faHeart = faHeart;
 
   transformationType;
   direction;
 
   @Output() showResults: EventEmitter<ResultsData[]> = new EventEmitter();
+  @Output() showThankYou: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
@@ -41,11 +44,14 @@ export class TimelineComponent implements OnInit {
 
   ngOnInit(): void {
     this.isBusy = true;
+    this.isError = false;
     this.timelineService.fetchTimeline().subscribe(data => {
-      console.log('data is fetched');
       this.filterData(data);
     },
-      () => this.isError = true);
+      () => {
+        this.isError = true;
+        this.isBusy = false;
+      });
   }
 
   filterData(data): void {
@@ -79,7 +85,6 @@ export class TimelineComponent implements OnInit {
   }
   // TODO: fix format, that in calendar would be marked
   update(loc: Location): void {
-    console.log(moment(loc.from).format('D/MM/YYYY, HH:mm A'));
     const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
@@ -117,39 +122,28 @@ export class TimelineComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: Questionaire) => {
-      console.log(result);
       if (result.isOfficialTest) {
         const testDate = new Date(result.time).getTime();
         const positiveTestData: PositiveTestData = new PositiveTestData(result.email, testDate, this.interestLocations);
         this.submitPositiveTestData(positiveTestData);
-        console.log('submit');
-        // TODO: remove all console.logs
       } else {
-        console.log('Data is not submitted');
+        console.log('Data is not submitted because Test is not official');
       }
     });
   }
 
   submitPositiveTestData(positiveTestData: PositiveTestData): void {
     this.locationsService.submitData(positiveTestData).subscribe(data => {
+      this.isSubmitSuccess = true;
+      this.showThankYou.emit(this.isSubmitSuccess);
       console.log('submit success', data);
     });
   }
 
   checkLocations(): void {
-    const resultsMock: ResultsData[] = [{ from: 1584576000000, to: 1584662400000, lat: 36.7758493, lon: -119.7181083, score: 80 },
-    { from: 1584976820000, to: 1585008000000, lat: 54.8268066, lon: 24.9463829, score: 0 },
-    { from: 1585008000000, to: 1585087200000, lat: 0, lon: 180, score: 20 },
-    { from: 1585087260000, to: 1585094400000, lat: 51.081083, lon: -114.1294214999999, score: 4 },
-    { from: 1585324800000, to: 1585326307000, lat: 23.3812399, lon: 86.246775, score: 830 },
-    { from: 1585333196000, to: 1585400781000, lat: -3.9736393, lon: 122.52313079999998, score: 10 }
-    ];
-
-    this.showResults.emit(resultsMock);
-    // TODO: enable backend post
-    // this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
-    //   this.showResults.emit(data);
-    // });
+    this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
+      this.showResults.emit(data);
+    });
   }
 
 }
