@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 import { NoopScrollStrategy, OverlayContainer } from '@angular/cdk/overlay';
+import { StartpageComponent } from './startpage/startpage.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { NoopScrollStrategy, OverlayContainer } from '@angular/cdk/overlay';
     PlaceDialogComponent,
     QuestionnaireDialogComponent,
     ResultsComponent,
-    InformationComponent
+    InformationComponent,
+    StartpageComponent
   ],
   imports: [
     BrowserModule,

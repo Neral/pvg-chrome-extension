@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
@@ -7,11 +7,10 @@ import { faPlus, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-ic
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimelineService } from '../services/timeline.service';
-import { Questionaire } from '../models/questionaire';
-import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
 import { PositiveTestData } from '../models/positiveTestData';
 import { ResultsData } from '../models/resultsData';
 import { LocationsService } from '../services/locations.service';
+import { Questionaire } from '../models/questionaire';
 
 
 @Component({
@@ -24,7 +23,6 @@ export class TimelineComponent implements OnInit {
   isBusy: boolean;
   isTimelineExist: boolean;
   isError: boolean;
-  isSubmitSuccess: boolean;
 
   faPlus = faPlus;
   faTrash = faTrash;
@@ -34,8 +32,9 @@ export class TimelineComponent implements OnInit {
   transformationType;
   direction;
 
-  @Output() showResults: EventEmitter<ResultsData[]> = new EventEmitter();
-  @Output() showThankYou: EventEmitter<boolean> = new EventEmitter();
+  @Input() questionaire: Questionaire;
+  @Output() testedPositiveDataSubmit: EventEmitter<boolean> = new EventEmitter();
+  @Output() checkDataSubmit: EventEmitter<ResultsData[]> = new EventEmitter();
 
   constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
@@ -57,7 +56,9 @@ export class TimelineComponent implements OnInit {
   filterData(data): void {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
-    const timeFromLocations = moment().subtract(weeksBack, 'week').valueOf();
+    const latestMoment = this.questionaire ? moment(this.questionaire.time) : moment();
+    const validTimeTo = latestMoment.valueOf();
+    const validTimeFrom = latestMoment.subtract(weeksBack, 'week').valueOf();
     for (const dataset of data[0][0]) {
       const location: Location = {
         from: dataset[0],
@@ -65,7 +66,8 @@ export class TimelineComponent implements OnInit {
         lat: dataset[1][2],
         lon: dataset[1][3]
       };
-      if (location.from < timeFromLocations) { continue; }
+      // TODO: think should we need to include last day, now it is not
+      if (location.from < validTimeFrom || location.to > validTimeTo) { continue; }
       if (location.to - location.from < minLocDuration * 1000) { continue; }
       this.interestLocations.push(location);
     }
@@ -113,36 +115,20 @@ export class TimelineComponent implements OnInit {
       }
     });
   }
-  // TODO: think to create general
-  openQuestionaireDialog(): void {
-    const data: Questionaire = new Questionaire(null, null, false);
-    const dialogRef: MatDialogRef<QuestionnaireDialogComponent, any> = this.dialog.open(QuestionnaireDialogComponent, {
-      width: '250px',
-      data
-    });
 
-    dialogRef.afterClosed().subscribe((result: Questionaire) => {
-      if (result.isOfficialTest) {
-        const testDate = new Date(result.time).getTime();
-        const positiveTestData: PositiveTestData = new PositiveTestData(result.email, testDate, this.interestLocations);
-        this.submitPositiveTestData(positiveTestData);
-      } else {
-        console.log('Data is not submitted because Test is not official');
-      }
-    });
-  }
+  submitPositiveTestData(): void {
+    const formattedFestDate = new Date(this.questionaire.time).getTime();
+    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email, formattedFestDate, this.interestLocations);
 
-  submitPositiveTestData(positiveTestData: PositiveTestData): void {
     this.locationsService.submitData(positiveTestData).subscribe(data => {
-      this.isSubmitSuccess = true;
-      this.showThankYou.emit(this.isSubmitSuccess);
-      console.log('submit success', data);
+      // TODO: think to add some more results as well
+      this.testedPositiveDataSubmit.emit();
     });
   }
 
-  checkLocations(): void {
+  checkData(): void {
     this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
-      this.showResults.emit(data);
+      this.checkDataSubmit.emit(data);
     });
   }
 
