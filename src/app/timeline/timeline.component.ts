@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
-import { faPlus, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faEdit, faHeart, faEye } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { PositiveTestData } from '../models/positiveTestData';
 import { ResultsData } from '../models/resultsData';
 import { LocationsService } from '../services/locations.service';
 import { Questionaire } from '../models/questionaire';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class TimelineComponent implements OnInit {
   faTrash = faTrash;
   faEdit = faEdit;
   faHeart = faHeart;
+  faEye = faEye;
 
   transformationType;
   direction;
@@ -90,6 +92,14 @@ export class TimelineComponent implements OnInit {
     const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
+  }
+
+  viewMap(loc: Location): void {
+    this.dialog.open(MapDialogComponent, {
+      width: '500px',
+      height: '390px',
+      data: loc
+    });
   }
 
   remove(loc: Location): void {
