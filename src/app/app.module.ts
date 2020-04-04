@@ -26,7 +26,7 @@ import { InformationComponent } from './information/information.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-
+import { StartpageComponent } from './startpage/startpage.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,8 @@ import { MatCardModule } from '@angular/material/card';
     PlaceDialogComponent,
     QuestionnaireDialogComponent,
     ResultsComponent,
-    InformationComponent
+    InformationComponent,
+    StartpageComponent
   ],
   imports: [
     BrowserModule,
