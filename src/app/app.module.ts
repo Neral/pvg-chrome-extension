@@ -27,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { StartpageComponent } from './startpage/startpage.component';
+import { MapDialogComponent } from './map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StartpageComponent } from './startpage/startpage.component';
     QuestionnaireDialogComponent,
     ResultsComponent,
     InformationComponent,
-    StartpageComponent
+    StartpageComponent,
+    MapDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,7 @@ import { StartpageComponent } from './startpage/startpage.component';
     MatCardModule,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent],
+  entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent, MapDialogComponent],
 
 })
 export class AppModule { }

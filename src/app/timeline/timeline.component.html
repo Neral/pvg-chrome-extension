@@ -24,6 +24,11 @@
                 ><fa-icon [icon]="faEdit"></fa-icon>
               </span>
 
+              <span
+                class="pointer-link"
+                (click)="viewMap(loc)"
+                ><fa-icon [icon]="faEye"></fa-icon>
+              </span>
               {{
                 loc.lat
                   | coordinates: transformationType.toDegree:direction.Latitude
