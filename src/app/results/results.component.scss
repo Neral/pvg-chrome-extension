@@ -36,10 +36,6 @@ table td {
   }
 }
 
-.button-width {
-  width: 36em;
-}
-
 .risk {
   &--high {
     background-color: #d6454f;
@@ -55,4 +51,28 @@ table td {
 .no-margin {
   margin: 0px;
   padding: 0px;
+}
+
+.scores {
+  margin: 0 20px;
+}
+
+.recommendations {
+  margin-bottom: 0;
+}
+
+.questionmark {
+  margin-left: 5px;
+}
+
+.pointer-link {
+  cursor: pointer;
+}
+
+.coordinates {
+  padding-left: 70px;
+}
+
+.time-range {
+  padding-left: 20px;
 }

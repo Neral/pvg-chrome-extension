@@ -1,6 +1,6 @@
 <small>
   <div mat-dialog-content>
-    <form>
+    <form [formGroup]="placeForm" (ngSubmit)="onSubmit()">
       <p>Information about location:</p>
       <mat-form-field class="top-margin--small">
         <mat-label>Date and Time</mat-label>
@@ -8,32 +8,57 @@
           matInput
           [owlDateTime]="dtRange"
           [owlDateTimeTrigger]="dtRange"
-          [(ngModel)]="data.timeRange"
-          name="dtRange"
           [selectMode]="'range'"
           placeholder="From - To"
+          formControlName="timeRange"
         />
         <owl-date-time #dtRange></owl-date-time>
+        <mat-error
+          *ngIf="timeRange.invalid && (timeRange.dirty || timeRange.touched)"
+        >
+          <p *ngIf="timeRange.errors.required">
+            Missing from-to date and time range
+          </p>
+          <p *ngIf="timeRange.errors.missingEndTime">
+            Missing end date and time
+          </p>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Latitude</mat-label>
         <input
           matInput
-          [(ngModel)]="data.latitude"
-          name="latitude"
           placeholder="e.g. 13.3646789"
+          formControlName="latitude"
         />
+        <mat-error *ngIf="latitude.invalid">
+          <p *ngIf="latitude.errors.required">Missing latitude of location</p>
+          <p *ngIf="latitude.errors.pattern">
+            Incorrect format, format e.g. 13.3646789
+          </p>
+          <p *ngIf="latitude.errors.invalidValue">
+            Invalid latitude, valid range from -90 to 90
+          </p>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Longitude</mat-label>
         <input
           matInput
-          [(ngModel)]="data.longitude"
-          name="longitude"
           placeholder="e.g. -13.3646789"
+          formControlName="longitude"
         />
+        <mat-error *ngIf="longitude.invalid">
+          <p *ngIf="longitude.errors.required">Missing longitude of location</p>
+          <p *ngIf="longitude.errors.pattern">
+            Incorrect format, format e.g. -13.3646789
+          </p>
+          <p *ngIf="longitude.errors.invalidValue">
+            Invalid longitude, valid range from -180 to 180
+          </p>
+        </mat-error>
         <mat-hint class="text-justify">
           Check your places coordinates at
           <a
@@ -51,8 +76,8 @@
             <button
               mat-raised-button
               color="primary"
-              class="button-width"
-              [mat-dialog-close]="data"
+              class="button-width--sm"
+              [disabled]="!placeForm.valid"
             >
               Add
             </button>
@@ -61,7 +86,7 @@
             <button
               mat-raised-button
               color="warn"
-              class="button-width"
+              class="button-width--sm"
               (click)="cancel()"
             >
               Cancel

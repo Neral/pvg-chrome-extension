@@ -30,12 +30,12 @@ tr {
 }
 
 table {
-  height: 150px;
+  height: 200px;
 }
 
 tbody {
   overflow-y: scroll;
-  height: 150px;
+  height: 200px;
   position: absolute;
 }
 
@@ -44,6 +44,6 @@ table td {
   overflow: hidden;
 }
 
-.button-width {
-  width: 15em;
+.timeline {
+  margin: 0 20px;
 }

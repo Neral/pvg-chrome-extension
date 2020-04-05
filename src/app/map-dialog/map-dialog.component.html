@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10">
+      <small class="align-bottom">
+        {{ data.from | date: "short" }} -
+        {{ data.to | date: "short" }}
+      </small>
+    </div>
+
+    <div class="col-sm-2">
+      <button mat-button (click)="close()">
+        <span class="align-top">X</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-spinner class="spinner" mode="indeterminate" *ngIf="!loaded"></mat-spinner>
+
+<iframe
+  (load)="handleLoad()"
+  width="450"
+  [height]="height"
+  [src]="mapUrl"
+  frameborder="0"
+  scrolling="no"
+  marginheight="0"
+  marginwidth="0"
+></iframe>

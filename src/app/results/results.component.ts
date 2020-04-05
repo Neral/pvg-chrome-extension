@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TransformationType, Direction } from 'angular-coordinates';
 import { ResultsData } from '../models/resultsData';
-import { redirectTo } from '../services/navigation';
+import { faQuestionCircle, faEye } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 
 @Component({
   selector: 'app-results',
@@ -14,10 +16,12 @@ export class ResultsComponent implements OnInit {
 
   transformationType;
   direction;
+  faQuestion = faQuestionCircle;
+  faEye = faEye;
 
   totalScore: number;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.transformationType = TransformationType;
     this.direction = Direction;
   }
@@ -36,4 +40,11 @@ export class ResultsComponent implements OnInit {
     });
   }
 
+  viewMap(loc: Location): void {
+    this.dialog.open(MapDialogComponent, {
+      width: '500px',
+      height: '390px',
+      data: loc
+    });
+  }
 }

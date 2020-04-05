@@ -9,7 +9,7 @@ import { CoordinatesModule } from 'angular-coordinates';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PlaceDialogComponent } from './place-dialog/place-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -26,7 +26,10 @@ import { InformationComponent } from './information/information.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-
+import { StartpageComponent } from './startpage/startpage.component';
+import { MapDialogComponent } from './map-dialog/map-dialog.component';
+import { HeaderComponent } from './header/header.component';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { MatCardModule } from '@angular/material/card';
     PlaceDialogComponent,
     QuestionnaireDialogComponent,
     ResultsComponent,
-    InformationComponent
+    InformationComponent,
+    StartpageComponent,
+    MapDialogComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -55,9 +61,11 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    ReactiveFormsModule,
+    MatTooltipModule
   ],
   bootstrap: [AppComponent],
-  entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent],
+  entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent, MapDialogComponent],
 
 })
 export class AppModule { }
