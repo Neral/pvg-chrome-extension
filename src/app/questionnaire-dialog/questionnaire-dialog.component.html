@@ -1,21 +1,20 @@
 <small>
   <div mat-dialog-content>
-    <form>
+    <form [formGroup]="questionaireForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <div class="bottom-margin">
           <small>
             <strong>Type of your positive test:</strong>
           </small>
         </div>
-        <input matInput style="display: none" />
+        <input matInput style="display: none;" />
         <mat-checkbox
           color="warn"
-          [(ngModel)]="data.isOfficialTest"
-          name="isOfficialTest"
+          formControlName="isOfficialTest"
           ><small>Nasal and Throat swab RT-PCR</small></mat-checkbox
         >
         <mat-hint class="text-justify"
-          >Information about
+          >We accept only official test data. Information about
           <a
             href="https://www.nejm.org/doi/10.1056/NEJMc2004973"
             target="_blank"
@@ -30,22 +29,21 @@
         <mat-label>Date of positive test</mat-label>
         <input
           matInput
-          [(ngModel)]="data.time"
-          name="positiveTestDate"
           [matDatepicker]="picker"
+          formControlName="positiveTestDate"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="positiveTestDate.invalid">Not valid date</mat-error>
       </mat-form-field>
-      <!-- TODO email -->
       <mat-form-field>
         <mat-label>Your email</mat-label>
         <input
           matInput
           placeholder="nam@example.com"
-          [(ngModel)]="data.email"
-          name="email"
+          formControlName="email"
         />
+        <mat-error *ngIf="email.invalid">Not valid email</mat-error>
         <mat-hint class="text-justify">
           After submit we will send confirmation email to you to ensure that
           data is valid.</mat-hint
@@ -56,15 +54,17 @@
         <div class="row">
           <div class="col-sm">
             <button
+              type="submit"
               mat-raised-button
               color="primary"
               class="button-width--sm"
-              [mat-dialog-close]="data"
+              
+              [disabled]="!questionaireForm.valid"
             >
               Submit
             </button>
           </div>
-          <div class="col-sm  top-margin--small">
+          <div class="col-sm top-margin--small">
             <button
               mat-raised-button
               color="warn"

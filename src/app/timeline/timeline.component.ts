@@ -87,9 +87,9 @@ export class TimelineComponent implements OnInit {
     const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
-  // TODO: fix format, that in calendar would be marked
+
   update(loc: Location): void {
-    const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
+    const data = new LocationForm([new Date(loc.from), new Date(loc.to)], loc.lat, loc.lon);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
   }
