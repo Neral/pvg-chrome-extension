@@ -9,7 +9,7 @@ import { CoordinatesModule } from 'angular-coordinates';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PlaceDialogComponent } from './place-dialog/place-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -58,6 +58,7 @@ import { MapDialogComponent } from './map-dialog/map-dialog.component';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent, MapDialogComponent],
