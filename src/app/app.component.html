@@ -1,10 +1,10 @@
-<app-information *ngIf="!showResults && !showThankYou"></app-information>
+<app-header></app-header>
 <app-startpage
   *ngIf="!showTimeline && !showResults && !showThankYou"
   (questionaireSubmit)="openTimeline($event)"
 ></app-startpage>
 
-<div class="mainframe">
+<div>
   <app-timeline
     [questionaire]="testedPositiveQuestionaire"
     *ngIf="showTimeline"

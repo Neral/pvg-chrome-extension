@@ -1,22 +1,20 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Questionaire } from '../models/questionaire';
 import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { InformationType } from '../constants';
 
 @Component({
   selector: 'app-startpage',
   templateUrl: './startpage.component.html',
   styleUrls: ['./startpage.component.scss']
 })
-export class StartpageComponent implements OnInit {
+export class StartpageComponent {
 
   @Output() questionaireSubmit: EventEmitter<Questionaire> = new EventEmitter();
-
+  informationType = InformationType.Introduction;
 
   constructor(public dialog: MatDialog) { }
-
-  ngOnInit() {
-  }
 
   openQuestionaireDialog(): void {
     const data: Questionaire = new Questionaire(null, null, false);

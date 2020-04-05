@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { StartpageComponent } from './startpage/startpage.component';
 import { MapDialogComponent } from './map-dialog/map-dialog.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MapDialogComponent } from './map-dialog/map-dialog.component';
     ResultsComponent,
     InformationComponent,
     StartpageComponent,
-    MapDialogComponent
+    MapDialogComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -30,16 +30,20 @@ tr {
 }
 
 table {
-  height: 150px;
+  height: 200px;
 }
 
 tbody {
   overflow-y: scroll;
-  height: 150px;
+  height: 200px;
   position: absolute;
 }
 
 table th,
 table td {
   overflow: hidden;
+}
+
+.timeline {
+  margin: 0 20px;
 }

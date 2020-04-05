@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TransformationType, Direction } from 'angular-coordinates';
 import { ResultsData } from '../models/resultsData';
-import { redirectTo } from '../services/navigation';
 
 @Component({
   selector: 'app-results',

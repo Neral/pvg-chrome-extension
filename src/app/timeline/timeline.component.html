@@ -1,6 +1,6 @@
-<ng-container
-  *ngIf="isTimelineExist && !isBusy && !isError"
->
+<app-information [informationType]="informationType"></app-information>
+
+<div class="timeline" *ngIf="isTimelineExist && !isBusy && !isError">
   <small>
     <div class="overflow: auto">
       <table class="table table-hover table-sm">
@@ -24,9 +24,7 @@
                 ><fa-icon [icon]="faEdit"></fa-icon>
               </span>
 
-              <span
-                class="pointer-link"
-                (click)="viewMap(loc)"
+              <span class="pointer-link" (click)="viewMap(loc)"
                 ><fa-icon [icon]="faEye"></fa-icon>
               </span>
               {{
@@ -80,7 +78,7 @@
       </button>
     </div>
   </div>
-</ng-container>
+</div>
 
 <mat-spinner
   style="margin: 0 auto;"
