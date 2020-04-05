@@ -64,17 +64,22 @@ export class TimelineComponent implements OnInit {
     const latestMoment = this.questionaire ? moment(this.questionaire.positiveTestDate) : moment();
     const validTimeTo = latestMoment.valueOf();
     const validTimeFrom = latestMoment.subtract(weeksBack, 'week').valueOf();
-    for (const dataset of data[0][0]) {
-      const location: Location = {
-        from: dataset[0],
-        to: dataset[13],
-        lat: dataset[1][2],
-        lon: dataset[1][3]
-      };
-      // TODO: think should we need to include last day, now it is not
-      if (location.from < validTimeFrom || location.to > validTimeTo) { continue; }
-      if (location.to - location.from < minLocDuration * 1000) { continue; }
-      this.interestLocations.push(location);
+    if (data[0][0]) {
+      for (const dataset of data[0][0]) {
+        const location: Location = {
+          from: dataset[0],
+          to: dataset[13],
+          lat: dataset[1][2],
+          lon: dataset[1][3]
+        };
+        // TODO: think should we need to include last day, now it is not
+        if (location.from < validTimeFrom || location.to > validTimeTo) { continue; }
+        if (location.to - location.from < minLocDuration * 1000) { continue; }
+        this.interestLocations.push(location);
+      }
+    } else {
+      this.isTimelineExist = false;
+      this.isBusy = false;
     }
 
     if (this.interestLocations.length > 0) {
@@ -82,7 +87,7 @@ export class TimelineComponent implements OnInit {
       this.isTimelineExist = true;
     } else {
       this.isBusy = false;
-      this.isTimelineExist = true;
+      this.isTimelineExist = false;
     }
   }
 
