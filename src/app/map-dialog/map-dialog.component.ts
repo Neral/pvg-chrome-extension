@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { Location } from '../models/location';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 

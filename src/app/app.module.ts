@@ -29,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 import { StartpageComponent } from './startpage/startpage.component';
 import { MapDialogComponent } from './map-dialog/map-dialog.component';
 import { HeaderComponent } from './header/header.component';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { HeaderComponent } from './header/header.component';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTooltipModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [PlaceDialogComponent, QuestionnaireDialogComponent, MapDialogComponent],

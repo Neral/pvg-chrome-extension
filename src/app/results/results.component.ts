@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TransformationType, Direction } from 'angular-coordinates';
 import { ResultsData } from '../models/resultsData';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-results',
@@ -13,6 +14,7 @@ export class ResultsComponent implements OnInit {
 
   transformationType;
   direction;
+  faQuestion = faQuestionCircle;
 
   totalScore: number;
 

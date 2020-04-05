@@ -1,7 +1,12 @@
 <small>
   <h4 class="text-center no-margin">
     Your overall location history score is
-    <span class="badge badge-secondary">{{ totalScore }}</span>
+    <span
+      class="badge badge-secondary"
+      matTooltip="Base about Google Maps Timeline service data that you have provided, below you can find “Privacy VS Germs” calculated risk score. Please be aware that content is provided for informational purposes only and is not intended to substitute any recommendations from local authorities, or any medical advice of a health care personnel. Consult your local medical authority for advice."
+      >{{ totalScore }}
+      <span class="questionmark"><fa-icon [icon]="faQuestion"></fa-icon></span
+    ></span>
   </h4>
 
   <div class="alert alert-light text-justify recommendations" role="alert">
