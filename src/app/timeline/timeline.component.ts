@@ -12,6 +12,7 @@ import { ResultsData } from '../models/resultsData';
 import { LocationsService } from '../services/locations.service';
 import { Questionaire } from '../models/questionaire';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
+import { InformationType } from '../constants';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class TimelineComponent implements OnInit {
   isBusy: boolean;
   isTimelineExist: boolean;
   isError: boolean;
+  informationType: InformationType;
 
   faPlus = faPlus;
   faTrash = faTrash;
@@ -53,12 +55,13 @@ export class TimelineComponent implements OnInit {
         this.isError = true;
         this.isBusy = false;
       });
+    this.informationType = this.questionaire ? InformationType.PositiveTest : InformationType.Check;
   }
 
   filterData(data): void {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
-    const latestMoment = this.questionaire ? moment(this.questionaire.time) : moment();
+    const latestMoment = this.questionaire ? moment(this.questionaire.positiveTestDate) : moment();
     const validTimeTo = latestMoment.valueOf();
     const validTimeFrom = latestMoment.subtract(weeksBack, 'week').valueOf();
     for (const dataset of data[0][0]) {
@@ -127,8 +130,9 @@ export class TimelineComponent implements OnInit {
   }
 
   submitPositiveTestData(): void {
-    const formattedFestDate = new Date(this.questionaire.time).getTime();
-    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email, formattedFestDate, this.interestLocations);
+    console.log(this.questionaire.positiveTestDate);
+    const formattedTestDate = new Date(this.questionaire.positiveTestDate).getTime();
+    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email, formattedTestDate, this.interestLocations);
 
     this.locationsService.submitData(positiveTestData).subscribe(data => {
       // TODO: think to add some more results as well
