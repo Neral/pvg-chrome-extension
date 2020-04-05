@@ -7,7 +7,7 @@ import { InformationType } from '../constants';
   styleUrls: ['./information.component.scss']
 })
 export class InformationComponent implements OnInit {
-  @Input() informationType: typeof InformationType;
+  @Input() informationType: InformationType;
   informationTypeConstants = InformationType;
 
   constructor() { }
