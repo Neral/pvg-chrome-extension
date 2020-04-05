@@ -4,19 +4,5 @@
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
 .cdk-global-scrollblock {
-  position: unset !important;
+		position: unset !important;
 }
-
-.button-width {
-  &--sm {
-    width: 12em;
-  }
-  &--md {
-    width: 15em;
-  }
-  &--lg {
-    width: 36em;
-  }
-}
-
-//TODO: take our standart/repetitive stylings here

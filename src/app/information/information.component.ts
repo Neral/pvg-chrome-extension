@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { InformationType } from '../constants';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-information',
@@ -7,13 +6,10 @@ import { InformationType } from '../constants';
   styleUrls: ['./information.component.scss']
 })
 export class InformationComponent implements OnInit {
-  @Input() informationType: InformationType;
-  informationTypeConstants = InformationType;
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.informationType);
   }
 
 }

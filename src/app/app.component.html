@@ -1,19 +1,14 @@
-<app-header></app-header>
-<app-startpage
-  *ngIf="!showTimeline && !showResults && !showThankYou"
-  (questionaireSubmit)="openTimeline($event)"
-></app-startpage>
+<app-information *ngIf="!showResults && !isSubmitSuccess"></app-information>
 
-<div>
+<div class="mainframe">
   <app-timeline
-    [questionaire]="testedPositiveQuestionaire"
-    *ngIf="showTimeline"
-    (checkDataSubmit)="handleCheckDataSubmit($event)"
-    (testedPositiveDataSubmit)="handleTestedPositiveDataSubmit()"
+    *ngIf="!showResults"
+    (showResults)="openResults($event)"
+    (showThankYou)="showThankYou($event)"
   ></app-timeline>
   <app-results *ngIf="showResults" [results]="eventResults"></app-results>
 
-  <div *ngIf="showThankYou" class="thank-you">
+  <div *ngIf="isSubmitSuccess" class="thank-you">
     <p class="text-center">
       <strong>
         <h1><fa-icon [icon]="faHeart" class="icon"></fa-icon></h1>

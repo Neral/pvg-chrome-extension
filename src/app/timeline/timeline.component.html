@@ -1,6 +1,6 @@
-<app-information [informationType]="informationType"></app-information>
-
-<div class="timeline" *ngIf="isTimelineExist && !isBusy && !isError">
+<ng-container
+  *ngIf="isTimelineExist && !isBusy && !isError && !isSubmitSuccess"
+>
   <small>
     <div class="overflow: auto">
       <table class="table table-hover table-sm">
@@ -24,9 +24,6 @@
                 ><fa-icon [icon]="faEdit"></fa-icon>
               </span>
 
-              <span class="pointer-link" (click)="viewMap(loc)"
-                ><fa-icon [icon]="faEye"></fa-icon>
-              </span>
               {{
                 loc.lat
                   | coordinates: transformationType.toDegree:direction.Latitude
@@ -55,33 +52,35 @@
   </small>
 
   <div class="container">
-    <div class="row d-flex justify-content-center">
-      <button
-        *ngIf="!questionaire"
-        mat-raised-button
-        color="primary"
-        class="button-width--md"
-        (click)="checkData()"
-        [disabled]="interestLocations?.length < 1"
-      >
-        Send Data for check
-      </button>
-      <button
-        *ngIf="questionaire"
-        mat-raised-button
-        color="warn"
-        class="button-width--md"
-        (click)="submitPositiveTestData()"
-        [disabled]="interestLocations?.length < 1"
-      >
-        Submit Data
-      </button>
+    <div class="row">
+      <div class="col-sm">
+        <button
+          mat-raised-button
+          color="primary"
+          class="button-width"
+          (click)="checkLocations()"
+          [disabled]="interestLocations?.length < 1"
+        >
+          Send Data for check
+        </button>
+      </div>
+      <div class="col-sm">
+        <button
+          mat-raised-button
+          color="warn"
+          class="button-width"
+          (click)="openQuestionaireDialog()"
+          [disabled]="interestLocations?.length < 1"
+        >
+          Tested COVID-19 Positive
+        </button>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
 
 <mat-spinner
-  style="margin: 0 auto;"
+  style="margin:0 auto;"
   mode="indeterminate"
   *ngIf="isBusy && !isError"
 ></mat-spinner>

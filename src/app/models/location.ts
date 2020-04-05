@@ -1,6 +1,6 @@
 export class LocationForm {
     constructor(
-        public timeRange: Date[],
+        public timeRange: number[],
         public latitude: number,
         public longitude: number,
     ) { }

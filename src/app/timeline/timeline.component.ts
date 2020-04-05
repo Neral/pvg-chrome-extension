@@ -1,18 +1,17 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { Location, LocationForm } from '../models/location';
 import { TransformationType, Direction } from 'angular-coordinates';
-import { faPlus, faTrash, faEdit, faHeart, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import { PlaceDialogComponent } from '../place-dialog/place-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimelineService } from '../services/timeline.service';
+import { Questionaire } from '../models/questionaire';
+import { QuestionnaireDialogComponent } from '../questionnaire-dialog/questionnaire-dialog.component';
 import { PositiveTestData } from '../models/positiveTestData';
 import { ResultsData } from '../models/resultsData';
 import { LocationsService } from '../services/locations.service';
-import { Questionaire } from '../models/questionaire';
-import { MapDialogComponent } from '../map-dialog/map-dialog.component';
-import { InformationType } from '../constants';
 
 
 @Component({
@@ -25,20 +24,18 @@ export class TimelineComponent implements OnInit {
   isBusy: boolean;
   isTimelineExist: boolean;
   isError: boolean;
-  informationType: InformationType;
+  isSubmitSuccess: boolean;
 
   faPlus = faPlus;
   faTrash = faTrash;
   faEdit = faEdit;
   faHeart = faHeart;
-  faEye = faEye;
 
   transformationType;
   direction;
 
-  @Input() questionaire: Questionaire;
-  @Output() testedPositiveDataSubmit: EventEmitter<boolean> = new EventEmitter();
-  @Output() checkDataSubmit: EventEmitter<ResultsData[]> = new EventEmitter();
+  @Output() showResults: EventEmitter<ResultsData[]> = new EventEmitter();
+  @Output() showThankYou: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private timelineService: TimelineService, private locationsService: LocationsService, public dialog: MatDialog) {
     this.transformationType = TransformationType;
@@ -55,15 +52,12 @@ export class TimelineComponent implements OnInit {
         this.isError = true;
         this.isBusy = false;
       });
-    this.informationType = this.questionaire ? InformationType.PositiveTest : InformationType.Check;
   }
 
   filterData(data): void {
     const weeksBack = 3;	// In weeks
     const minLocDuration = 10 * 60; // In minutes
-    const latestMoment = this.questionaire ? moment(this.questionaire.positiveTestDate) : moment();
-    const validTimeTo = latestMoment.valueOf();
-    const validTimeFrom = latestMoment.subtract(weeksBack, 'week').valueOf();
+    const timeFromLocations = moment().subtract(weeksBack, 'week').valueOf();
     for (const dataset of data[0][0]) {
       const location: Location = {
         from: dataset[0],
@@ -71,8 +65,7 @@ export class TimelineComponent implements OnInit {
         lat: dataset[1][2],
         lon: dataset[1][3]
       };
-      // TODO: think should we need to include last day, now it is not
-      if (location.from < validTimeFrom || location.to > validTimeTo) { continue; }
+      if (location.from < timeFromLocations) { continue; }
       if (location.to - location.from < minLocDuration * 1000) { continue; }
       this.interestLocations.push(location);
     }
@@ -90,19 +83,11 @@ export class TimelineComponent implements OnInit {
     const data = new LocationForm(null, null, null);
     this.openDialog(data);
   }
-
+  // TODO: fix format, that in calendar would be marked
   update(loc: Location): void {
-    const data = new LocationForm([new Date(loc.from), new Date(loc.to)], loc.lat, loc.lon);
+    const data = new LocationForm([loc.from, loc.to], loc.lat, loc.lon);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
-  }
-
-  viewMap(loc: Location): void {
-    this.dialog.open(MapDialogComponent, {
-      width: '500px',
-      height: '390px',
-      data: loc
-    });
   }
 
   remove(loc: Location): void {
@@ -128,21 +113,36 @@ export class TimelineComponent implements OnInit {
       }
     });
   }
+  // TODO: think to create general
+  openQuestionaireDialog(): void {
+    const data: Questionaire = new Questionaire(null, null, false);
+    const dialogRef: MatDialogRef<QuestionnaireDialogComponent, any> = this.dialog.open(QuestionnaireDialogComponent, {
+      width: '250px',
+      data
+    });
 
-  submitPositiveTestData(): void {
-    console.log(this.questionaire.positiveTestDate);
-    const formattedTestDate = new Date(this.questionaire.positiveTestDate).getTime();
-    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email, formattedTestDate, this.interestLocations);
-
-    this.locationsService.submitData(positiveTestData).subscribe(data => {
-      // TODO: think to add some more results as well
-      this.testedPositiveDataSubmit.emit();
+    dialogRef.afterClosed().subscribe((result: Questionaire) => {
+      if (result.isOfficialTest) {
+        const testDate = new Date(result.time).getTime();
+        const positiveTestData: PositiveTestData = new PositiveTestData(result.email, testDate, this.interestLocations);
+        this.submitPositiveTestData(positiveTestData);
+      } else {
+        console.log('Data is not submitted because Test is not official');
+      }
     });
   }
 
-  checkData(): void {
+  submitPositiveTestData(positiveTestData: PositiveTestData): void {
+    this.locationsService.submitData(positiveTestData).subscribe(data => {
+      this.isSubmitSuccess = true;
+      this.showThankYou.emit(this.isSubmitSuccess);
+      console.log('submit success', data);
+    });
+  }
+
+  checkLocations(): void {
     this.locationsService.calculateResults({ locations: this.interestLocations }).subscribe(data => {
-      this.checkDataSubmit.emit(data);
+      this.showResults.emit(data);
     });
   }
 

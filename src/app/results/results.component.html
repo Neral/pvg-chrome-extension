@@ -1,16 +1,30 @@
 <small>
+  <div class="alert alert-light text-justify no-margin" role="alert">
+    <p>
+      Based on
+      <a href="https://www.google.com/maps/timeline?pb" target="_blank">
+        Google Maps Timeline</a
+      >
+      service data that you have provided, below you can find “Privacy VS Germs”
+      calculated risk score. Please be aware that content is provided for
+      informational purposes only and is not intended to substitute any
+      recommendations from local authorities, or any medical advice of a health
+      care personnel. Consult your local medical authority for advice.
+    </p>
+    <hr />
+  </div>
+
   <h4 class="text-center no-margin">
     Your overall location history score is
-    <span
-      class="badge badge-secondary"
-      matTooltip="Base about Google Maps Timeline service data that you have provided, below you can find “Privacy VS Germs” calculated risk score. Please be aware that content is provided for informational purposes only and is not intended to substitute any recommendations from local authorities, or any medical advice of a health care personnel. Consult your local medical authority for advice."
-      >{{ totalScore }}
-      <span class="questionmark"><fa-icon [icon]="faQuestion"></fa-icon></span
-    ></span>
+    <span class="badge badge-secondary">{{ totalScore }}</span>
   </h4>
 
-  <div class="alert alert-light text-justify recommendations" role="alert">
-    <ng-container *ngIf="totalScore > 4">
+  <div
+    class="alert alert-light text-justify"
+    role="alert"
+    *ngIf="totalScore > 4"
+  >
+    <small>
       Recommendations for people with medium/highrisk (positive COVID-19 case on
       route): <br />
       People who are otherwise healthy should self-isolateand contact their
@@ -19,9 +33,11 @@
       days in self-isolation. <br />Symptoms:<br />Fever; tiredness; dry cough;
       shortness of breath; achesand pains; sore throat. Very few people will
       reportdiarrhoea, nausea or a runny nose.
-    </ng-container>
+    </small>
+  </div>
 
-    <ng-container *ngIf="totalScore < 4">
+  <div class="alert alert-light" role="alert" *ngIf="totalScore < 4">
+    <small>
       Recommendations for people with low risk (nopositive COVID-19 case founded
       on route):
       <ul>
@@ -44,57 +60,55 @@
           staying away from large groups of people.
         </li>
       </ul>
-    </ng-container>
+    </small>
   </div>
 </small>
 
-<div class="scores">
-  <small
-    ><table class="table table-hover table-sm margin-medium text-center">
-      <thead>
-        <tr>
-          <th scope="col" class="column-1">Score</th>
+<small
+  ><table class="table table-hover table-sm margin-medium text-center">
+    <thead>
+      <tr>
+        <th scope="col" class="column-1">Score</th>
 
-          <th scope="col" class="column-2">Latitude, Longitude</th>
-          <th scope="col" class="column-3">Time from - to</th>
-        </tr>
-      </thead>
-      <tbody class="pointer-link">
-        <tr
-          *ngFor="let loc of results"
-          [class.risk--high]="loc.score > 10"
-          [class.risk--medium]="loc.score > 4 && loc.score < 10"
-          [class.risk--low]="loc.score > 0 && loc.score < 5"
-        >
-          <td class="column-1">{{ loc.score }}</td>
+        <th scope="col" class="column-2">Latitude, Longitude</th>
+        <th scope="col" class="column-3">Time from - to</th>
+      </tr>
+    </thead>
+    <tbody class="pointer-link">
+      <tr
+        *ngFor="let loc of results"
+        [class.risk--high]="loc.score > 10"
+        [class.risk--medium]="loc.score > 4 && loc.score < 10"
+        [class.risk--low]="loc.score > 0 && loc.score < 5"
+      >
+        <td class="column-1">{{ loc.score }}</td>
 
-          <td class="column-2">
-            {{
-              loc.lat
-                | coordinates: transformationType.toDegree:direction.Latitude
-            }},
-            {{
-              loc.lon
-                | coordinates: transformationType.toDegree:direction.lontitude
-            }}
-          </td>
-          <td class="column-3">
-            {{ loc.from | date: "short" }} -
-            {{ loc.to | date: "short" }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </small>
-</div>
+        <td class="column-2">
+          {{
+            loc.lat
+              | coordinates: transformationType.toDegree:direction.Latitude
+          }},
+          {{
+            loc.lon
+              | coordinates: transformationType.toDegree:direction.lontitude
+          }}
+        </td>
+        <td class="column-3">
+          {{ loc.from | date: "short" }} -
+          {{ loc.to | date: "short" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</small>
 
 <div class="container">
   <button
     mat-raised-button
     color="primary"
-    class="button-width--lg"
+    class="button-width"
     (click)="navigate()"
   >
-    Get advisory from World Health Organization
+    Get advisory from your World Health Organization
   </button>
 </div>

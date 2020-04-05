@@ -1,54 +1,38 @@
 <small>
   <div class="alert alert-light text-justify" role="alert">
-    <ng-container
-      *ngIf="informationType === informationTypeConstants.Introduction"
-    >
-      There are two ways how you can interact with “Privacy VS Germs”:
-      <ul>
-        <li>
-          Check if you been in places where others who tested positive been. All
-          currently known general public advice are kept into account (i.e. how
-          long virus survives, etc.). By pressing
-          <span [style.color]="'#007bff'">&quot;Send Data for check&quot;</span>
-          you send ONLY location coordinates and from/to times, no sensitive
-          data is sent.
-          <u>This method does not store any data on our servers.</u>
-        </li>
-        <li>
-          If you tested positive for COVID-19 your
-          <u
-            >3 week location data (latitude, longitude, from, to,
-            <strong>no private data</strong>) will be stored on our servers</u
-          >
-          for later referencing check-up queries. After pressing
-          <span [style.color]="'#f44336'"
-            >&quot;Tested COVID-19 positive&quot;</span
-          >
-          you will get additional questions on testing you been performed.
-        </li>
-      </ul>
-    </ng-container>
-    <ng-container
-      *ngIf="informationType === informationTypeConstants.PositiveTest"
-      >Below you will find extract of your location history form Google Time
-      line. With your consent this timeline will be submitted and saved in our
-      database for later reference. No personal information will be saved, we do
-      not store your email, location names, etc. only coordinates and
-      corresponding times will be saved. Please review data provided below, you
-      can edit or delete any entry you don’t want to share.
-      <strong
-        >We appreciate your honesty and willingness to help in these difficult
-        times.</strong
-      ></ng-container
-    >
-    <ng-container *ngIf="informationType === informationTypeConstants.Check"
-      >Below you will find extract of your location history form Google Time
-      line. This information will be send only for cross reference against
-      infected data set, no data will be saved on PVG side. Please review data
-      provided below, you can edit or delete any entry you don’t want to send.
-      After data is processed, you will see results page with detailed
-      explanation if you were in places with risk of
-      COVID-19contamination.</ng-container
-    >
+    <p>
+      Based on
+      <a href="https://www.google.com/maps/timeline?pb" target="_blank">
+        Google Maps Timeline</a
+      >
+      service data, below are your visited placed within 3 weeks period. You can
+      review your location list, you can either add or remove places before
+      sending.
+    </p>
+    <hr />
+
+    There are two ways of sending data:
+    <ul>
+      <li>
+        Check if you been in places where others who tested positive been. All
+        currently known general public advice are kept into account (i.e. how
+        long virus survives, etc.). By pressing
+        <span [style.color]="'#007bff'">&quot;Send Data for check&quot;</span>
+        you send ONLY location coordinates and from/to times, no sensitive data
+        is sent. <u>This method does not store any data on our servers.</u>
+      </li>
+      <li>
+        If you tested positive for COVID-19 your
+        <u
+          >3 week location data (latitude, longitude, from, to,
+          <strong>no private data</strong>) will be stored on our servers</u
+        >
+        for later referencing check-up queries. After pressing
+        <span [style.color]="'#f44336'"
+          >&quot;Tested COVID-19 positive&quot;</span
+        >
+        you will get additional questions on testing you been performed.
+      </li>
+    </ul>
   </div>
 </small>

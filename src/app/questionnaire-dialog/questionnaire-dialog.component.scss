@@ -3,7 +3,7 @@
     margin-top: 50px;
   }
   &--medium {
-    margin-top: 30px;
+    margin-top: 15px;
   }
   &--small {
     margin-top: 5px;
@@ -12,4 +12,8 @@
 
 .bottom-margin {
   margin-bottom: 10px;
+}
+
+.button-width {
+  width : 12em;
 }
