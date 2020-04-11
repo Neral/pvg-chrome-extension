@@ -22,7 +22,7 @@ export class MapDialogComponent implements OnInit {
 
   ngOnInit() {
     // tslint:disable-next-line: max-line-length
-    this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://maps.google.com/maps?q=${this.data.lat},${this.data.lon}&t=&z=15&ie=UTF8&iwloc=&output=embed`);
+    this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://maps.google.com/maps?q=${this.data.latitude},${this.data.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`);
   }
 
   close(): void {

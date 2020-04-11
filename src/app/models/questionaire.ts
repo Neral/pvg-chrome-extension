@@ -1,6 +1,6 @@
 export class Questionaire {
     constructor(
-        public positiveTestDate: number,
+        public positiveTestDate: Date,
         public email: string,
         public isOfficialTest: boolean,
     ) { }

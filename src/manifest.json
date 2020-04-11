@@ -1,6 +1,6 @@
 {
   "name": "PVG",
-  "version": "1.3",
+  "version": "1.4",
   "description": "Privacy VS Gems",
   "manifest_version": 2,
   "browser_action": {

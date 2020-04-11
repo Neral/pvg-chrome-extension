@@ -7,8 +7,8 @@ export class LocationForm {
 }
 
 export interface Location {
-    lat: number;
-    lon: number;
-    from: number;
-    to: number;
+    latitude: number;
+    longitude: number;
+    timeFrom: Date;
+    timeTo: Date;
 }

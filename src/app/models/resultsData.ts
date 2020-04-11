@@ -2,10 +2,10 @@ import { Location } from './location';
 
 export interface ResultsData {
     score: number;
-    lat: number;
-    lon: number;
-    from: number;
-    to: number;
+    latitude: number;
+    longitude: number;
+    timeFrom: Date;
+    timeTo: Date;
 }
 
 export interface ResultsCalculationData {

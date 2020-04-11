@@ -66,7 +66,8 @@ export class TimelineComponent implements OnInit {
     const validTimeFrom = latestMoment.subtract(weeksBack, 'week').valueOf();
     if (data[0][0]) {
       for (const dataset of data[0][0]) {
-        const location: Location = {
+        // TODO: add type
+        const location = {
           from: dataset[0],
           to: dataset[13],
           lat: dataset[1][2],
@@ -75,7 +76,14 @@ export class TimelineComponent implements OnInit {
         // TODO: think should we need to include last day, now it is not
         if (location.from < validTimeFrom || location.to > validTimeTo) { continue; }
         if (location.to - location.from < minLocDuration * 1000) { continue; }
-        this.interestLocations.push(location);
+
+        const interestedLocation: Location = {
+          timeFrom: new Date(location.from),
+          timeTo: new Date(location.to),
+          latitude: location.lat,
+          longitude: location.lon,
+        };
+        this.interestLocations.push(interestedLocation);
       }
     } else {
       this.isTimelineExist = false;
@@ -97,7 +105,7 @@ export class TimelineComponent implements OnInit {
   }
 
   update(loc: Location): void {
-    const data = new LocationForm([new Date(loc.from), new Date(loc.to)], loc.lat, loc.lon);
+    const data = new LocationForm([loc.timeFrom, loc.timeTo], loc.latitude, loc.longitude);
     const index = this.interestLocations.indexOf(loc);
     this.openDialog(data, index);
   }
@@ -122,9 +130,12 @@ export class TimelineComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const from: number = new Date(result.timeRange[0]).getTime();
-      const to: number = new Date(result.timeRange[1]).getTime();
-      const location: Location = { from, to, lat: result.latitude, lon: result.longitude };
+      const location: Location = {
+        timeFrom: result.timeRange[0],
+        timeTo: result.timeRange[1],
+        latitude: result.latitude,
+        longitude: result.longitude
+      };
 
       if (updateIndex) {
         this.interestLocations[updateIndex] = location;
@@ -136,8 +147,9 @@ export class TimelineComponent implements OnInit {
 
   submitPositiveTestData(): void {
     console.log(this.questionaire.positiveTestDate);
-    const formattedTestDate = new Date(this.questionaire.positiveTestDate).getTime();
-    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email, formattedTestDate, this.interestLocations);
+    const positiveTestData: PositiveTestData = new PositiveTestData(this.questionaire.email,
+      this.questionaire.positiveTestDate,
+      this.interestLocations);
 
     this.locationsService.submitData(positiveTestData).subscribe(data => {
       // TODO: think to add some more results as well

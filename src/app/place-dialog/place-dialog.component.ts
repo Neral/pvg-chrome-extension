@@ -51,7 +51,9 @@ export class PlaceDialogComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.placeForm.value.timeRange);
-    const formData: LocationForm = this.placeForm.value;
+    const formData = this.placeForm.value; // TODO: add type
+    formData.latitude = parseFloat(formData.latitude);
+    formData.longitude = parseFloat(formData.longitude);
     this.dialogRef.close(formData);
   }
 

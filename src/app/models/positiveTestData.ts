@@ -6,9 +6,9 @@ export class PositiveTestData {
     testType;
     constructor(
         public email: string,
-        public testDate: number,
+        public testDate: Date,
         public locations: Location[],
     ) {
         this.testType = OFICIAL_TEST_TYPE;
-     }
+    }
 }

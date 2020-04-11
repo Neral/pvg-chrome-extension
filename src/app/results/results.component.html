@@ -73,17 +73,17 @@
               ><fa-icon [icon]="faEye"></fa-icon>
             </span>
             {{
-              loc.lat
+              loc.latitude
                 | coordinates: transformationType.toDegree:direction.Latitude
             }},
             {{
-              loc.lon
+              loc.longitude
                 | coordinates: transformationType.toDegree:direction.lontitude
             }}
           </td>
           <td class="column-3 time-range">
-            {{ loc.from | date: "short" }} -
-            {{ loc.to | date: "short" }}
+            {{ loc.timeFrom | date: "short" }} -
+            {{ loc.timeTo | date: "short" }}
           </td>
         </tr>
       </tbody>
